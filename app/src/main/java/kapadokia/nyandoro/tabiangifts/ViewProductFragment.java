@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import kapadokia.nyandoro.tabiangifts.databinding.FragmentViewProductBinding;
 import kapadokia.nyandoro.tabiangifts.models.Product;
+import kapadokia.nyandoro.tabiangifts.models.ProductViewModel;
 import kapadokia.nyandoro.tabiangifts.util.Products;
 
 public class ViewProductFragment extends Fragment {
@@ -37,10 +38,11 @@ public class ViewProductFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentViewProductBinding.inflate(inflater);
 
-        Products products = new Products();
-        mBinding.setProduct(products.PRODUCTS[0]);
-
+        ProductViewModel productView = new ProductViewModel();
+        productView.setProduct(mProduct);
         mBinding.setQty(1);
+        mBinding.setProductView(productView);
+
 
         return mBinding.getRoot();
     }
