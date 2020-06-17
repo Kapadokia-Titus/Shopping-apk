@@ -21,7 +21,10 @@ android {
         enabled = true
     }
 }
-
+repositories {
+    mavenCentral()
+    google()
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -32,4 +35,8 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+
+//    image loading dependencies
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 }

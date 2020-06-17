@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import kapadokia.nyandoro.tabiangifts.adapter.ProductsAdapter;
 import kapadokia.nyandoro.tabiangifts.databinding.FragmentMainBinding;
 import kapadokia.nyandoro.tabiangifts.models.Product;
 import kapadokia.nyandoro.tabiangifts.util.Products;
@@ -45,7 +46,11 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-
+        //facilitating refresh
+        Products products = new Products();
+        List<Product> productList = new ArrayList<>();
+        productList.addAll(Arrays.asList(products.PRODUCTS));
+        ((ProductsAdapter)mBinding.recyclervView.getAdapter()).refreshList(productList);
         onItemsLoadComplete();
     }
 
