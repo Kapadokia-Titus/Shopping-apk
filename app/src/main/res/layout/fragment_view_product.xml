@@ -115,6 +115,12 @@
                     android:layout_height="14sp"
                     android:src="@drawable/ic_dollor_sign_red"/>
 
+<!--                in this textView we have used ternary expressions
+                     to determine if there was sale price or not, if yes it will be
+                    displayed and another widget of original price will be visible,
+                    if it was'nt, only the regular price will be displayed
+
+                    -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

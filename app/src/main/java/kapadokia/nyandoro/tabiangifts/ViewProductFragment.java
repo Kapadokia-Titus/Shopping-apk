@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import kapadokia.nyandoro.tabiangifts.databinding.FragmentViewProductBinding;
+import kapadokia.nyandoro.tabiangifts.models.Product;
 import kapadokia.nyandoro.tabiangifts.util.Products;
 
 public class ViewProductFragment extends Fragment {
@@ -18,6 +19,18 @@ public class ViewProductFragment extends Fragment {
 
     // Data binding
     FragmentViewProductBinding mBinding;
+    //vars
+    private Product mProduct;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            mProduct = bundle.getParcelable(getString(R.string.intent_product));
+        }
+    }
+
 
     @Nullable
     @Override

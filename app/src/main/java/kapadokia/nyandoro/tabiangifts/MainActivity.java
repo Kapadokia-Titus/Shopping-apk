@@ -4,12 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import kapadokia.nyandoro.tabiangifts.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     //data binding
     // we capitalise the 1st letter and then remove te underscore
@@ -26,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void init(){
         // inflating the vie product fragment
-        ViewProductFragment  fragment = new ViewProductFragment();
+        MainFragment fragment = new MainFragment();
 
         //instantiate the fragment transaction object
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        transaction.replace(R.id.frame_container, fragment, getString(R.string.fragment_view_product));
+        transaction.replace(R.id.frame_container, fragment, getString(R.string.fragment_main));
         //commit the transaction
         transaction.commit();
     }
