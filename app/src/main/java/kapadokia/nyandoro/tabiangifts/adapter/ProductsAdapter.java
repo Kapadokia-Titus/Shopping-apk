@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import kapadokia.nyandoro.tabiangifts.IMainActivity;
 import kapadokia.nyandoro.tabiangifts.R;
 import kapadokia.nyandoro.tabiangifts.databinding.ProductItemBinding;
 import kapadokia.nyandoro.tabiangifts.models.Product;
@@ -47,6 +48,9 @@ public class ProductsAdapter extends  RecyclerView.Adapter<ProductsAdapter.Bindi
     public void onBindViewHolder(BindingHolder holder, int position) {
         Product product = mProducts.get(position);
         holder.binding.setProduct(product);
+
+        //handling onitemclick
+        holder.binding.setIMainActivity((IMainActivity) mContext);
 //        holder.binding.setVariable(BR.product, product);
         holder.binding.executePendingBindings();
     }
