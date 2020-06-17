@@ -25,11 +25,11 @@ public class ViewProductFragment extends Fragment {
         mBinding = FragmentViewProductBinding.inflate(inflater);
 
         Products products = new Products();
-       mBinding.setProduct(products.PRODUCTS[0]);
+        mBinding.setProduct(products.PRODUCTS[0]);
 
         mBinding.setQty(1);
 
-        return null;
+        return mBinding.getRoot();
     }
 
 }

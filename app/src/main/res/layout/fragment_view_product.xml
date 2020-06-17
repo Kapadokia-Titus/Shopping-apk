@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--    to declare values and imports you MUST use a data tag.
+        no way around it
+ -->
     <data>
+<!--        the imports gives us opportunity to refference util class-->
         <import type="kapadokia.nyandoro.tabiangifts.util.BigDecimalUtil"/>
         <import type="kapadokia.nyandoro.tabiangifts.util.StringUtil"/>
         <import type="android.view.View"/>
-        
+
+
+<!--        below in the variable tag, we are defining
+            a variable in the layour
+            the name is just a variablle which will generate a method
+            called setProduct in the product's model class
+-->
         <variable
             name="product"
             type="kapadokia.nyandoro.tabiangifts.models.Product"/>

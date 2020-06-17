@@ -85,6 +85,8 @@ public class Product implements Parcelable{
         }
     }
 
+    // this method getNumberRatingsString() returns the number of rating as a string
+    // then surrounding it with  brackets
     public String getNumberRatingsString(){
         return ("(" + getNum_ratings() + ")");
     }
