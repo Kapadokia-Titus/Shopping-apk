@@ -45,14 +45,17 @@ public class ProductViewModel extends BaseObservable {
         };
     }
 
-            //    @Bindable
-            //    public int getQuantity() {
-            //        return quantity;
-            //    }
-            //
-            //    public void setQuantity(int quantity) {
-            //        this.quantity = quantity;
-            //    }
+    //issues
+
+        @Bindable
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+            notifyPropertyChanged(kapadokia.nyandoro.tabiangifts.BR.quantity);
+        }
 
     // add a bindable annotation which generates an entry to the BR merhod
     @Bindable
@@ -65,4 +68,6 @@ public class ProductViewModel extends BaseObservable {
         // notif that the product was changed
         notifyPropertyChanged(BR.product);
     }
+
+
 }

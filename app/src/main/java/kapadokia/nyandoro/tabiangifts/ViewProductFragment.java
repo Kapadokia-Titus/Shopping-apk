@@ -40,7 +40,7 @@ public class ViewProductFragment extends Fragment {
 
         ProductViewModel productView = new ProductViewModel();
         productView.setProduct(mProduct);
-        mBinding.setQty(1);
+        productView.setQuantity(1);
         mBinding.setProductView(productView);
 
 

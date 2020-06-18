@@ -9,12 +9,70 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
-        <FrameLayout
+        <androidx.appcompat.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/frame_container">
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            android:background="@color/blue4"
+            android:elevation="10dp"
+            app:contentInsetStart="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        </FrameLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize">
+
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/cart"
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginEnd="8dp">
+
+                        <TextView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:id="@+id/item_count"
+                            android:textSize="10sp"
+                            android:gravity="center"
+                            android:textColor="@color/White"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_cart_white"
+                            android:id="@+id/cart_image"
+                            android:layout_gravity="center_horizontal"/>
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/frame_container"/>
+        </RelativeLayout>
+
+
+
+
 
     </LinearLayout>
 </layout>

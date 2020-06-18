@@ -5,9 +5,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import kapadokia.nyandoro.tabiangifts.databinding.ActivityMainBinding;
 import kapadokia.nyandoro.tabiangifts.models.Product;
+import kapadokia.nyandoro.tabiangifts.util.Products;
 
 public class MainActivity extends AppCompatActivity implements IMainActivity{
 
@@ -57,7 +59,22 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
     }
 
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+    public void showQuantityDialog() {
+        Log.d(TAG, "showQuantityDialog: showing Quantity Dialog.");
+        ChooseQuantityDialog dialog = new ChooseQuantityDialog();
+        dialog.show(getSupportFragmentManager(), getString(R.string.dialog_choose_quantity));
+    }
 
+    /*
+       Set quantity in ViewProductFragment
+    */
+    @Override
+    public void setQuantity(int quantity) {
+        Log.d(TAG, "selectQuantity: selected quantity: " + quantity);
+
+        ViewProductFragment fragment = (ViewProductFragment)getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_view_product));
+        if(fragment != null){
+            fragment.mBinding.getProductView().setQuantity(quantity);
+        }
     }
 }
