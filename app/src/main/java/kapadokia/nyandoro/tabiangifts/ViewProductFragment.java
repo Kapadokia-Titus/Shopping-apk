@@ -14,12 +14,13 @@ import kapadokia.nyandoro.tabiangifts.models.Product;
 import kapadokia.nyandoro.tabiangifts.models.ProductViewModel;
 import kapadokia.nyandoro.tabiangifts.util.Products;
 
-public class ViewProductFragment extends Fragment {
+public class ViewProductFragment extends Fragment{
 
     private static final String TAG = "ViewProductFragment";
 
     // Data binding
     FragmentViewProductBinding mBinding;
+
     //vars
     private Product mProduct;
 
@@ -32,17 +33,17 @@ public class ViewProductFragment extends Fragment {
         }
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentViewProductBinding.inflate(inflater);
+        mBinding.setIMainActivity((IMainActivity)getActivity());
 
-        ProductViewModel productView = new ProductViewModel();
-        productView.setProduct(mProduct);
-        productView.setQuantity(1);
-        mBinding.setProductView(productView);
+        ProductViewModel viewProductModel = new ProductViewModel();
+        viewProductModel.setProduct(mProduct);
+        viewProductModel.setQuantity(1);
 
+        mBinding.setProductView(viewProductModel);
 
         return mBinding.getRoot();
     }

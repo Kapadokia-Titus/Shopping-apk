@@ -8,67 +8,122 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import kapadokia.nyandoro.tabiangifts.databinding.ActivityMainBinding;
+import kapadokia.nyandoro.tabiangifts.models.CartItem;
+import kapadokia.nyandoro.tabiangifts.models.CartViewModel;
 import kapadokia.nyandoro.tabiangifts.models.Product;
 import kapadokia.nyandoro.tabiangifts.util.PreferenceKeys;
+import kapadokia.nyandoro.tabiangifts.util.Products;
 
 public class MainActivity extends AppCompatActivity implements IMainActivity{
 
     private static final String TAG = "MainActivity";
 
     //data binding
-    // we capitalise the 1st letter and then remove te underscore
     ActivityMainBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding  = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding.cart.setOnTouchListener(new CartTouchListener());
 
-        init();
         getShoppingCart();
+        init();
     }
 
-
     private void init(){
-        // inflating the vie product fragment
         MainFragment fragment = new MainFragment();
-
-        //instantiate the fragment transaction object
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
         transaction.replace(R.id.frame_container, fragment, getString(R.string.fragment_main));
-        //commit the transaction
         transaction.commit();
     }
 
     private void getShoppingCart(){
+        Log.d(TAG, "getShoppingCart: getting shopping cart.");
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Set<String> serialNumbers = preferences.getStringSet(PreferenceKeys.shopping_cart, new HashSet<String>());
-        mBinding.setNumCartItems(serialNumbers.size());
+
+        // Retrieve the quantities of each item from the cart
+        Products products = new Products();
+        List<CartItem> cartItems = new ArrayList<>();
+        for(String serialNumber : serialNumbers){
+            int quantity = preferences.getInt(serialNumber, 0);
+
+            cartItems.add(new CartItem(products.PRODUCT_MAP.get(serialNumber), quantity));
+        }
+
+        CartViewModel viewModel = new CartViewModel();
+        viewModel.setCart(cartItems);
+        try{
+            viewModel.setCartVisible(mBinding.getCartView().isCartVisible());
+        }catch (NullPointerException e){
+            Log.e(TAG, "getShoppingCart: NullPointerException: " + e.getMessage() );
+        }
+        mBinding.setCartView(viewModel);
+    }
+
+    public static class CartTouchListener implements View.OnTouchListener{
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP){
+                view.setBackgroundColor(view.getContext().getResources().getColor(R.color.blue4));
+                view.performClick();
+
+                IMainActivity iMainActivity = (IMainActivity)view.getContext();
+                iMainActivity.inflateViewCartFragment();
+            }
+            else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                view.setBackgroundColor(view.getContext().getResources().getColor(R.color.blue6));
+            }
+
+            return true;
+        }
+    }
+
+    @Override
+    public void setCartVisibility(boolean visibility) {
+        mBinding.getCartView().setCartVisible(visibility);
+    }
+
+    @Override
+    public void inflateViewCartFragment(){
+        ViewCartFragment fragment = (ViewCartFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_view_cart));
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if(fragment == null){
+            fragment = new ViewCartFragment();
+            transaction.replace(R.id.frame_container, fragment, getString(R.string.fragment_view_cart));
+            transaction.addToBackStack(getString(R.string.fragment_view_cart));
+            transaction.commit();
+        }
     }
 
     @Override
     public void inflateViewProductFragment(Product product) {
+        Log.d(TAG, "inflateViewProductFragment: called.");
+
         ViewProductFragment fragment = new ViewProductFragment();
+
         Bundle bundle = new Bundle();
-        //add product to the parcelable
-        bundle.putParcelable(getString(R.string.intent_product),product);
+        bundle.putParcelable(getString(R.string.intent_product), product);
         fragment.setArguments(bundle);
 
-        //instantiate the fragment transaction object
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
         transaction.replace(R.id.frame_container, fragment, getString(R.string.fragment_view_product));
-        //add transaction to the backstack
         transaction.addToBackStack(getString(R.string.fragment_view_product));
-        //commit the transaction
         transaction.commit();
+
     }
 
     @Override
@@ -93,28 +148,31 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
 
     @Override
     public void addToCart(Product product, int quantity) {
+        Log.d(TAG, "addToCart: adding "+ quantity + " " + product.getTitle() + "to cart.");
 
-        //get the shared preference object
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
 
-        // we are using a set to get the serial numbers and add to cart
-        Set<String>  serialNumbers = preferences.getStringSet(PreferenceKeys.shopping_cart, new HashSet<String>());
+        //add the new products serial number (if it hasn't already been added)
+        Set<String> serialNumbers = preferences.getStringSet(PreferenceKeys.shopping_cart, new HashSet<String>());
         serialNumbers.add(String.valueOf(product.getSerial_number()));
-
         editor.putStringSet(PreferenceKeys.shopping_cart, serialNumbers);
         editor.commit();
 
-        //getting the current quantity and passing it to the cart
+        //add the quantity
         int currentQuantity = preferences.getInt(String.valueOf(product.getSerial_number()), 0);
-        // sum the current quantity with the new quantity
-        editor.putInt(String.valueOf(product.getSerial_number()), (currentQuantity+ quantity));
 
+        //commit the updated quantity
+        editor.putInt(String.valueOf(product.getSerial_number()), (currentQuantity + quantity));
+        editor.commit();
+
+        //reset the quantity in ViewProductFragment
         setQuantity(1);
 
-        // let the user know that the product has been added to cart
-        Toast.makeText(this, "added to cart", Toast.LENGTH_SHORT).show();
-
+        //update the bindings
         getShoppingCart();
+
+        // notify the user
+        Toast.makeText(this, "added to cart", Toast.LENGTH_SHORT).show();
     }
 }

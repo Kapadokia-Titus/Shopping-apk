@@ -23,10 +23,17 @@ public class ViewCartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentViewCartBinding.inflate(inflater);
         mBinding.setIMainActivity((IMainActivity)getActivity());
+        mBinding.getIMainActivity().setCartVisibility(true);
 
 
         return mBinding.getRoot();
     }
 
+    @Override
+    public void onDestroy() {
+        mBinding.getIMainActivity().setCartVisibility(false);
+        super.onDestroy();
+    }
 
 }
+

@@ -1,42 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
-
-<!--    to declare values and imports you MUST use a data tag.
-        no way around it
- -->
     <data>
-<!--        the imports gives us opportunity to refference util class-->
         <import type="kapadokia.nyandoro.tabiangifts.util.BigDecimalUtil"/>
         <import type="kapadokia.nyandoro.tabiangifts.util.StringUtil"/>
         <import type="android.view.View"/>
 
-
-<!--        below in the variable tag, we are defining
-            a variable in the layour
-            the name is just a variablle which will generate a method
-            called setproductView.product in the productView.product's model class
--->
         <variable
             name="productView"
             type="kapadokia.nyandoro.tabiangifts.models.ProductViewModel"/>
         <variable
             name="iMainActivity"
             type="kapadokia.nyandoro.tabiangifts.IMainActivity"/>
-
-
     </data>
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/White">
-        
+
         <ProgressBar
-            android:layout_width="@dimen/progress_bar_dimentions"
-            android:layout_height="@dimen/progress_bar_dimentions"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/progress_bar"
             android:layout_centerInParent="true"
-            android:visibility="@{productView.imageVisibility ? View.GONE :View.VISIBLE}"/>
+            android:visibility="@{productView.imageVisibility ? View.GONE : View.VISIBLE}"/>
+
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -45,7 +33,7 @@
             android:padding="10dp"
             android:background="@color/White"
             android:id="@+id/container_view"
-            android:visibility="@{productView.imageVisibility ? View.VISIBLE : View.INVISIBLE }">
+            android:visibility="@{productView.imageVisibility ? View.VISIBLE : View.INVISIBLE}">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -53,7 +41,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="5dp">
-                
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -66,7 +54,23 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"/>
 
-              
+
+                <!--<RatingBar-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--style="?attr/ratingBarStyleSmall"-->
+                <!--android:theme="@style/RatingBar"-->
+                <!--android:scaleX="1.2"-->
+                <!--android:scaleY="1.2"-->
+                <!--android:numStars="5"-->
+                <!--android:rating="@{BigDecimalUtil.getFloat(productView.product.rating)}"-->
+                <!--android:id="@+id/rating"-->
+                <!--android:isIndicator="true"-->
+                <!--android:layout_toLeftOf="@+id/num_ratings"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:layout_centerVertical="true"/>-->
+
+
                 <RatingBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,7 +79,7 @@
                     android:scaleX="1.2"
                     android:scaleY="1.2"
                     android:numStars="5"
-                    android:rating="@{BigDecimalUtil.getFloat(productView.product.rating)}"
+                    android:rating="@{productView.product.rating.floatValue()}"
                     android:id="@+id/rating"
                     android:isIndicator="true"
                     android:layout_toLeftOf="@+id/num_ratings"
@@ -83,7 +87,7 @@
                     android:layout_centerVertical="true"/>
 
             </RelativeLayout>
-            
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,7 +102,7 @@
                 android:layout_height="200dp"
                 android:layout_marginTop="10dp">
 
-                
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -106,8 +110,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:id="@+id/image"
-                    app:imageResource="@{productView.product.image}"
-                    app:requestListener="@{productView.customRequestListener}"/>
+                    app:requestListener="@{productView.customRequestListener}"
+                    app:imageResource="@{productView.product.image}"/>
 
             </RelativeLayout>
 
@@ -123,12 +127,6 @@
                     android:layout_height="14sp"
                     android:src="@drawable/ic_dollor_sign_red"/>
 
-<!--                in this textView we have used ternary expressions
-                     to determine if there was sale price or not, if yes it will be
-                    displayed and another widget of original price will be visible,
-                    if it was'nt, only the regular price will be displayed
-
-                    -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -137,7 +135,7 @@
                     android:text="@{productView.product.hasSalePrice() ?  BigDecimalUtil.getValue(productView.product.sale_price) : BigDecimalUtil.getValue(productView.product.price)}"
                     android:id="@+id/price"/>
 
-             
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -151,7 +149,6 @@
 
             </LinearLayout>
 
-
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -160,7 +157,8 @@
                 android:layout_marginTop="13dp"
                 android:id="@+id/quantity_button"
                 android:onClick="@{() -> iMainActivity.showQuantityDialog()}">
-             
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -180,7 +178,7 @@
 
             </RelativeLayout>
 
-          
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -188,7 +186,7 @@
                 android:layout_marginTop="13dp"
                 android:background="@drawable/orange_rounded_button"
                 android:id="@+id/add_to_cart"
-                android:onClick="@{()-> iMainActivity.addToCart(productView.product, productView.quantity)}">
+                android:onClick="@{() -> iMainActivity.addToCart(productView.product, productView.quantity)}">
 
                 <TextView
                     android:layout_width="wrap_content"

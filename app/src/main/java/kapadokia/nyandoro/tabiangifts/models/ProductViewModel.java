@@ -11,22 +11,41 @@ import com.bumptech.glide.request.target.Target;
 
 import kapadokia.nyandoro.tabiangifts.BR;
 
-public class ProductViewModel extends BaseObservable {
 
-    // define all the variables that will be passed in the layout
+public class ProductViewModel extends BaseObservable{
+
     private Product product;
     private int quantity;
-
-    // image visibility will be equal to true when its done downloading.
     private boolean imageVisibility = false;
 
     @Bindable
-    public boolean isImageVisibility() {
+    public int getQuantity() {
+        return quantity;
+    }
+
+    @Bindable
+    public Product getProduct() {
+        return product;
+    }
+
+    @Bindable
+    public boolean getImageVisibility() {
         return imageVisibility;
     }
 
-    public void setImageVisibility(boolean imageVisibility) {
-        this.imageVisibility = imageVisibility;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+        notifyPropertyChanged(kapadokia.nyandoro.tabiangifts.BR.quantity);
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+        notifyPropertyChanged(kapadokia.nyandoro.tabiangifts.BR.product);
+    }
+
+
+    public void setImageVisible(boolean imageVisible) {
+        imageVisibility = imageVisible;
         notifyPropertyChanged(kapadokia.nyandoro.tabiangifts.BR.imageVisibility);
     }
 
@@ -39,35 +58,9 @@ public class ProductViewModel extends BaseObservable {
 
             @Override
             public boolean onResourceReady(Object resource, Object model, Target target, DataSource dataSource, boolean isFirstResource) {
-                setImageVisibility(true);
+                setImageVisible(true);
                 return false;
             }
         };
     }
-
-    //issues
-
-        @Bindable
-        public int getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-            notifyPropertyChanged(kapadokia.nyandoro.tabiangifts.BR.quantity);
-        }
-
-    // add a bindable annotation which generates an entry to the BR merhod
-    @Bindable
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-        // notif that the product was changed
-        notifyPropertyChanged(BR.product);
-    }
-
-
 }
