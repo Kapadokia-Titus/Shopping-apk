@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable
+            name="numCartItems"
+            type="int" />
+    </data>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -43,6 +48,7 @@
                             android:id="@+id/item_count"
                             android:textSize="10sp"
                             android:gravity="center"
+                            android:text="@{String.valueOf(numCartItems)}"
                             android:textColor="@color/White"
                             android:layout_gravity="center_horizontal"/>
 

@@ -10,4 +10,6 @@ public interface IMainActivity {
     void showQuantityDialog();
 
     void setQuantity(int quantity);
+
+    void addToCart(Product product, int quantity);
 }
