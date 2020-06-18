@@ -47,4 +47,3 @@ public class ChooseQuantityDialog extends DialogFragment {
         }
     };
 }
-
