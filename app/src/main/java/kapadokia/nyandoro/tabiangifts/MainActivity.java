@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mBinding.cart.setOnTouchListener(new CartTouchListener());
+        mBinding.proceedToCheckout.setOnClickListener(mCheckOutListener);
 
         getShoppingCart();
         init();
@@ -79,6 +80,57 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
         mBinding.setCartView(viewModel);
     }
 
+    // checkout method
+    public void checkout(){
+        Log.d(TAG, "checkout: Checking out ");
+        mBinding.progressBar.setVisibility(View.VISIBLE );
+
+        mCheckoutHandler = new Handler();
+        mCheckoutRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mCheckoutHandler.postDelayed(mCheckoutRunnable, 200);
+                mCheckoutTimer +=200;
+
+                if (mCheckoutTimer>=1600){
+                        emptyCart();
+                        mBinding.progressBar.setVisibility(View.GONE);
+                        mCheckoutHandler.removeCallbacks(mCheckoutRunnable);
+                        mCheckoutTimer =0;
+                }
+
+            }
+        };
+        
+        mCheckoutRunnable.run();
+    }
+
+    private void emptyCart() {
+        Log.d(TAG, "emptyCart: emptying cart");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        Set<String> serialNumbers = preferences.getStringSet(PreferenceKeys.shopping_cart, new HashSet<String>());
+        SharedPreferences.Editor editor =preferences.edit();
+
+        for(String serialNumber: serialNumbers){
+            editor.remove(serialNumber);
+            editor.commit();
+        }
+
+        editor.remove(PreferenceKeys.shopping_cart);
+        editor.commit();
+        Toast.makeText(this, "Thanks for shopping", Toast.LENGTH_SHORT).show();
+        removeViewCartFragment();
+        getShoppingCart();
+    }
+
+    public View.OnClickListener mCheckOutListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            checkout();
+        }
+    };
+
     public static class CartTouchListener implements View.OnTouchListener{
 
         @Override
@@ -99,6 +151,15 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
         }
     }
 
+    public void removeViewCartFragment(){
+        getSupportFragmentManager().popBackStack();
+        ViewCartFragment fragment = (ViewCartFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_view_cart));
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if(fragment != null){
+            transaction.remove(fragment);
+            transaction.commit();
+        }
+    }
     @Override
     public void setCartVisibility(boolean visibility) {
         mBinding.getCartView().setCartVisible(visibility);
