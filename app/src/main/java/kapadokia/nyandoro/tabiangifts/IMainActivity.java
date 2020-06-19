@@ -1,5 +1,6 @@
 package kapadokia.nyandoro.tabiangifts;
 
+import kapadokia.nyandoro.tabiangifts.models.CartItem;
 import kapadokia.nyandoro.tabiangifts.models.Product;
 
 public interface IMainActivity {
@@ -15,4 +16,8 @@ public interface IMainActivity {
     void inflateViewCartFragment();
 
     void setCartVisibility(boolean visibility);
+
+    void updateQuantity(Product product, int quantity);
+
+    void removeCartItem(CartItem cartItem);
 }

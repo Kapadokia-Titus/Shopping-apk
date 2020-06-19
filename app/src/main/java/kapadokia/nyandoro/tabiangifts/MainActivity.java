@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -28,8 +29,14 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
 
     private static final String TAG = "MainActivity";
 
+
     //data binding
     ActivityMainBinding mBinding;
+    //vars
+    private boolean mClickToExit = false;
+    private Runnable mCheckoutRunnable;
+    private Handler mCheckoutHandler;
+    private int mCheckoutTimer = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
         mBinding.getCartView().setCartVisible(visibility);
     }
 
+
     @Override
     public void inflateViewCartFragment(){
         ViewCartFragment fragment = (ViewCartFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_view_cart));
@@ -125,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
         transaction.commit();
 
     }
+
 
     @Override
     public void showQuantityDialog() {
@@ -174,5 +183,62 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
 
         // notify the user
         Toast.makeText(this, "added to cart", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void updateQuantity(Product product, int quantity) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        int currentQuantity = preferences.getInt(String.valueOf(product.getSerial_number()), 0);
+        editor.putInt(String.valueOf(product.getSerial_number()),currentQuantity+quantity);
+        editor.commit();
+       getShoppingCart();
+    }
+
+    @Override
+    public void removeCartItem(CartItem cartItem) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.remove(String.valueOf(cartItem.getProduct().getSerial_number()));
+        editor.commit();
+
+        Set<String> serialNumbers =preferences.getStringSet(PreferenceKeys.shopping_cart, new HashSet<String>());
+        if (serialNumbers.size() == 1){
+            editor.remove(PreferenceKeys.shopping_cart);
+            editor.commit();
+        }else{
+            serialNumbers.remove(String.valueOf(cartItem.getProduct().getSerial_number()));
+            editor.putStringSet(PreferenceKeys.shopping_cart, serialNumbers);
+            editor.commit();
+        }
+
+        getShoppingCart();
+
+        //remove the item from the list in ViewCartFragment
+        ViewCartFragment fragment = (ViewCartFragment)getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_view_cart));
+        if(fragment != null){
+            fragment.updateCartItems();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
+        Log.d(TAG, "onBackPressed: backstack count: " + backStackCount);
+        if (backStackCount == 0 && mClickToExit) {
+            super.onBackPressed();
+        }
+        if (backStackCount == 0 && !mClickToExit) {
+            Toast.makeText(this, "1 more click to exit.", Toast.LENGTH_SHORT).show();
+            mClickToExit = true;
+        }
+        else{
+            mClickToExit = false;
+            super.onBackPressed();
+        }
     }
 }
