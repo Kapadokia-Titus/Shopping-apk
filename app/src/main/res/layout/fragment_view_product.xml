@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="kapadokia.nyandoro.tabiangifts.util.BigDecimalUtil"/>
         <import type="kapadokia.nyandoro.tabiangifts.util.StringUtil"/>
@@ -13,7 +14,6 @@
             type="kapadokia.nyandoro.tabiangifts.IMainActivity"/>
     </data>
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/White">
@@ -26,7 +26,6 @@
             android:visibility="@{productView.imageVisibility ? View.GONE : View.VISIBLE}"/>
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -180,26 +179,30 @@
 
 
             <RelativeLayout
+                android:id="@+id/add_to_cart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 android:layout_marginTop="13dp"
                 android:background="@drawable/orange_rounded_button"
-                android:id="@+id/add_to_cart"
-                android:onClick="@{() -> iMainActivity.addToCart(productView.product, productView.quantity)}">
+                android:onClick="@{() -> iMainActivity.addToCart(productView.product, productView.quantity)}"
+                android:padding="12dp">
 
                 <TextView
+                    android:id="@+id/text_add_to_cart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@color/Black"
-                    android:text="Add to Cart"
-                    android:id="@+id/text_add_to_cart"
                     android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:text="Add to Cart"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
 
 
             </RelativeLayout>
+
+
 
         </LinearLayout>
     </RelativeLayout>
