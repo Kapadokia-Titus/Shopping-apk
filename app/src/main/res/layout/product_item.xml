@@ -16,10 +16,20 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:padding="10dp"
-        android:background="@drawable/grey_border"
+        android:background="@color/lightGrey"
         android:id="@+id/item_container"
         android:onClick="@{() -> iMainActivity.inflateViewProductFragment(product)}">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:padding="5dp"
+            android:background="@color/White"
+            android:orientation="vertical">
+
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -118,6 +128,6 @@
 
 
         </LinearLayout>
-
+        </LinearLayout>
     </LinearLayout>
 </layout>

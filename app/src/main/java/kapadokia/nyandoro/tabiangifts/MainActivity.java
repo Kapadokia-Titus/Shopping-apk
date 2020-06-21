@@ -137,14 +137,14 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
         public boolean onTouch(View view, MotionEvent motionEvent) {
 
             if (motionEvent.getAction() == MotionEvent.ACTION_UP){
-                view.setBackgroundColor(view.getContext().getResources().getColor(R.color.blue4));
+                view.setBackgroundColor(view.getContext().getResources().getColor(R.color.colorPrimary));
                 view.performClick();
 
                 IMainActivity iMainActivity = (IMainActivity)view.getContext();
                 iMainActivity.inflateViewCartFragment();
             }
             else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-                view.setBackgroundColor(view.getContext().getResources().getColor(R.color.blue6));
+                view.setBackgroundColor(view.getContext().getResources().getColor(R.color.colorPrimary));
             }
 
             return true;
