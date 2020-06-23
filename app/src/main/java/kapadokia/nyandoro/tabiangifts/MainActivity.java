@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity{
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Set<String> serialNumbers = preferences.getStringSet(PreferenceKeys.shopping_cart, new HashSet<String>());
 
-        // Retrieve the quantities of each item from the cart
+
         Products products = new Products();
         List<CartItem> cartItems = new ArrayList<>();
         for(String serialNumber : serialNumbers){

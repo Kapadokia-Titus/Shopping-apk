@@ -24,7 +24,7 @@ public class ViewCartFragmentBindingAdapters {
         if(layoutManager == null){
             view.setLayoutManager(new LinearLayoutManager(view.getContext()));
         }
-        CartItemAdapter adapter = (CartItemAdapter) view.getAdapter();
+            CartItemAdapter adapter = (CartItemAdapter) view.getAdapter();
         if(adapter == null){
             adapter = new CartItemAdapter(view.getContext(), cartItems);
             view.setAdapter(adapter);
